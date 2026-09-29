@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SpendWise - Budget Tracker</title>
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/jpeg" href="Assets/Logo.jpg">
+
+    <!-- Google Fonts & Font Awesome Icons -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+    <div class="app-container">
+
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar">
+            <div class="brand">
+                <img src="Assets/Logo.jpg" alt="SpendWise logo" width="50">
+                <h2>SpendWise</h2>
+            </div>
+
+            <nav class="nav-links">
+                <a href="#dashboard" class="nav-item active" data-target="dashboard-page">
+                    <i class="fa-solid fa-chart-pie"></i> Dashboard
+                </a>
+                <a href="#expenses" class="nav-item" data-target="expenses-page">
+                    <i class="fa-solid fa-wallet"></i> Expenses
+                </a>
+                <a href="#reports" class="nav-item" data-target="reports-page">
+                    <i class="fa-solid fa-chart-line"></i> Reports
+                </a>
+                <a href="#settings" class="nav-item" data-target="settings-page">
+                    <i class="fa-solid fa-gear"></i> Settings
+                </a>
+            </nav>
+        </aside>
+
+        <!-- Main Content Area -->
+        <main class="main-content">
+
+            <!-- DASHBOARD PAGE -->
+            <section id="dashboard-page" class="page-content active-page">
+                <header class="top-header">
+                    <div class="header-title">
+                        <h1>Dashboard</h1>
+                        <p>Track and manage your finances with SpendWise.</p>
+                    </div>
+
+                    <div class="user-profile">
+                        <span>Welcome back!</span>
+                        <strong>SpendWise User</strong>
+                    </div>
+                </header>
+
+                <section class="overview-section">
+                    <div class="section-header">
+                        <h2>Monthly Overview</h2>
+                        <p>Your financial activity this month</p>
+                    </div>
+
+                    <!-- Dynamic Summary Cards Container -->
+                    <div class="cards-grid" id="cards-grid">
+                        <!-- Cards will render dynamically from script.js -->
+                    </div>
+                </section>
+
+                <!-- ADD & MANAGE EXPENSES SECTION -->
+                <section class="manage-expenses-section" style="margin-top: 30px; background: #ffffff; padding: 24px; border-radius: 12px; border: 1px solid #e2e8f0;">
+                    <h2>Add New Expense</h2>
+                    <p style="color: #64748b; font-size: 0.9rem; margin-bottom: 16px;">Enter an expense name and amount to record it in your budget.</p>
+                    
+                    <form id="expense-form" style="display: flex; gap: 12px; flex-wrap: wrap; align-items: center; margin-bottom: 24px;">
+                        <input type="text" id="expense-name-input" placeholder="Expense Name (e.g., Groceries)" required style="padding: 10px 14px; border: 1px solid #cbd5e1; border-radius: 6px; flex: 1; min-width: 200px;">
+                        <input type="number" id="expense-amount-input" placeholder="Amount ($)" step="0.01" min="0.01" required style="padding: 10px 14px; border: 1px solid #cbd5e1; border-radius: 6px; width: 140px;">
+                        <button type="submit" style="padding: 10px 20px; background-color: #2563eb; color: #fff; border: none; border-radius: 6px; cursor: pointer; font-weight: 600;"><i class="fa-solid fa-plus"></i> Add Expense</button>
+                    </form>
+
+                    <h3 style="margin-bottom: 12px; font-size: 1.1rem;">Current Expenses List</h3>
+                    <ul id="expenses-list-container" style="list-style: none; padding: 0;">
+                        <!-- Dynamically populated list items with Delete buttons -->
+                    </ul>
+                </section>
+
+                <!-- BUDGETING TIPS SECTION WITH YOUTUBE VIDEO -->
+                <section class="tips-section" style="margin-top: 30px; background: #ffffff; padding: 24px; border-radius: 12px; border: 1px solid #e2e8f0;">
+                    <h2>Budgeting Tips</h2>
+                    <p style="color: #64748b; font-size: 0.9rem; margin-bottom: 16px;">Learn effective strategies for personal financial management and budgeting.</p>
+                    
+                    <div class="video-container" style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; max-width: 100%; border-radius: 8px; background: #000;">
+                        <iframe style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0;" src="https://www.youtube.com/embed/sVKQn2I4HDM" title="How to Create a Budget" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                    </div>
+                    <p style="margin-top: 12px; font-size: 0.85rem; color: #64748b;">
+                        Watch on YouTube: <a href="https://www.youtube.com/watch?v=sVKQn2I4HDM" target="_blank" rel="noopener noreferrer" style="color: #2563eb; text-decoration: underline;">How to Budget Money for Beginners <i class="fa-solid fa-arrow-up-right-from-square"></i></a>
+                    </p>
+                </section>
+            </section>
+
+            <!-- EXPENSES PAGE -->
+            <section id="expenses-page" class="page-content" style="display: none;">
+                <header class="top-header">
+                    <div class="header-title">
+                        <h1>Expenses</h1>
+                        <p>View and manage your itemized expenditures.</p>
+                    </div>
+                </header>
+                <div style="background: #fff; padding: 24px; border-radius: 12px; border: 1px solid #e2e8f0; margin-top: 20px;">
+                    <h3>Itemized Expense Management</h3>
+                    <p style="color: #64748b; font-size: 0.9rem; margin-bottom: 16px;">Review or remove logged expenses from your records.</p>
+                    <ul id="expenses-page-list" style="list-style: none; padding: 0;">
+                        <!-- Mirror list populated dynamically -->
+                    </ul>
+                </div>
+            </section>
+
+            <!-- REPORTS PAGE -->
+            <section id="reports-page" class="page-content" style="display: none;">
+                <header class="top-header">
+                    <div class="header-title">
+                        <h1>Reports</h1>
+                        <p>Analyze your monthly spending and balance summary.</p>
+                    </div>
+                </header>
+                <div style="background: #fff; padding: 24px; border-radius: 12px; border: 1px solid #e2e8f0; margin-top: 20px;">
+                    <h3>Financial Summary</h3>
+                    <p>Open your browser console (F12) to inspect formatted real-time outputs generated by `script.js`.</p>
+                </div>
+            </section>
+
+            <!-- SETTINGS PAGE -->
+            <section id="settings-page" class="page-content" style="display: none;">
+                <header class="top-header">
+                    <div class="header-title">
+                        <h1>Settings</h1>
+                        <p>Manage your SpendWise application preferences.</p>
+                    </div>
+                </header>
+                <div style="background: #fff; padding: 24px; border-radius: 12px; border: 1px solid #e2e8f0; margin-top: 20px;">
+                    <h3>App Preferences</h3>
+                    <p>Configure budget thresholds, default currency, and profile settings.</p>
+                </div>
+            </section>
+
+        </main>
+
+    </div>
+
+    <!-- Link JavaScript -->
+    <script src="script.js"></script>
+</body>
+</html>
