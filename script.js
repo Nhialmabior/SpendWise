@@ -2,11 +2,11 @@
  * SpendWise - Interactive Budget Tracker
  * 
  * Requirements Implemented:
- * 1. Implement Decision Making: Conditional statements evaluate budget state.
+ * 1. Decision Making: Conditionals evaluate budget state & render a dynamic UI warning banner.
  * 2. Work with Multiple Records: Arrays store structured expense objects.
- * 3. Process Data with Loops: `for` loop and `forEach` process records.
- * 4. Update Dashboard Dynamically: DOM manipulation updates cards and list elements.
- * 5. Handle User Interactions: Event listeners handle form submissions and clicks.
+ * 3. Process Data with Loops: `for` loops and `forEach` process records.
+ * 4. Update Dashboard Dynamically: DOM manipulation updates cards, lists, & alerts on screen.
+ * 5. Handle User Interactions: Event listeners handle form submissions and button clicks.
  */
 
 // ==========================================
@@ -61,7 +61,7 @@ function calculateRemainingBalance(budget, expenses) {
 function addExpense(name, amount) {
     let parsedAmount = parseFloat(amount);
     
-    // Conditionals: Validate input parameters
+    // Input validation condition
     if (name && !isNaN(parsedAmount) && parsedAmount > 0) {
         expensesList.push({ name: name.trim(), amount: parsedAmount });
         updateUI();
@@ -75,7 +75,6 @@ function addExpense(name, amount) {
  * Deletes an expense item by array index
  */
 function deleteExpense(index) {
-    // Conditionals: Boundary check
     if (index >= 0 && index < expensesList.length) {
         let removed = expensesList.splice(index, 1);
         console.log(`[-] Removed Expense: ${removed[0].name} (${currencySymbol}${removed[0].amount})`);
@@ -90,22 +89,48 @@ function deleteExpense(index) {
 // ==========================================
 
 /**
- * Dynamically updates DOM elements on the webpage
+ * Dynamically updates DOM elements and displays visual feedback directly on the webpage
  */
 function updateUI() {
     const cardsGrid = document.getElementById("cards-grid");
     const listContainer = document.getElementById("expenses-list-container");
     const pageListContainer = document.getElementById("expenses-page-list");
+    const alertBannerContainer = document.getElementById("alert-banner-container");
 
     // Perform financial calculations
     let totalExpenses = calculateTotalExpenses();
     let remainingBalance = calculateRemainingBalance(totalBudget, totalExpenses);
 
+    // Dynamic Visual Alert Banner on the Webpage (Addressing feedback)
+    if (alertBannerContainer) {
+        if (remainingBalance < 0) {
+            alertBannerContainer.innerHTML = `
+                <div style="background-color: #fef2f2; border: 1px solid #fca5a5; color: #991b1b; padding: 14px 18px; border-radius: 8px; font-weight: 600; display: flex; align-items: center; gap: 10px; margin-bottom: 20px;">
+                    <i class="fa-solid fa-triangle-exclamation" style="font-size: 1.2rem;"></i>
+                    <span><strong>Budget Warning:</strong> You have exceeded your monthly budget by ${currencySymbol}${Math.abs(remainingBalance).toFixed(2)}!</span>
+                </div>
+            `;
+        } else if (remainingBalance === 0) {
+            alertBannerContainer.innerHTML = `
+                <div style="background-color: #fffbebfb; border: 1px solid #fde68a; color: #92400e; padding: 14px 18px; border-radius: 8px; font-weight: 600; display: flex; align-items: center; gap: 10px; margin-bottom: 20px;">
+                    <i class="fa-solid fa-circle-info" style="font-size: 1.2rem;"></i>
+                    <span><strong>Budget Notice:</strong> You have reached your exact budget limit of ${currencySymbol}${totalBudget.toFixed(2)}.</span>
+                </div>
+            `;
+        } else {
+            alertBannerContainer.innerHTML = `
+                <div style="background-color: #f0fdf4; border: 1px solid #86efac; color: #166534; padding: 14px 18px; border-radius: 8px; font-weight: 500; display: flex; align-items: center; gap: 10px; margin-bottom: 20px;">
+                    <i class="fa-solid fa-circle-check" style="font-size: 1.2rem;"></i>
+                    <span><strong>Budget Status:</strong> You are within your budget! Remaining balance: <strong>${currencySymbol}${remainingBalance.toFixed(2)}</strong></span>
+                </div>
+            `;
+        }
+    }
+
     // Render Overview Cards using a loop
     if (cardsGrid) {
         cardsGrid.innerHTML = "";
         
-        // Loop processing array elements
         expensesList.forEach(item => {
             const card = document.createElement("article");
             card.className = "card";
@@ -124,7 +149,6 @@ function updateUI() {
     if (listContainer) {
         listContainer.innerHTML = "";
 
-        // Conditionals: Check for empty array
         if (expensesList.length === 0) {
             listContainer.innerHTML = `<li style="padding: 12px; color: #64748b;">No expenses added yet.</li>`;
         } else {
@@ -150,12 +174,9 @@ function updateUI() {
 
 
 // ==========================================
-// 4. EVALUATE SCENARIOS (Conditionals & Console)
+// 4. EVALUATE SCENARIOS (Console Logging)
 // ==========================================
 
-/**
- * Displays formatted reports and evaluates conditional status scenarios
- */
 function displayConsoleResults() {
     let totalExpenses = calculateTotalExpenses();
     let remainingBalance = calculateRemainingBalance(totalBudget, totalExpenses);
@@ -171,14 +192,12 @@ function displayConsoleResults() {
     console.log("--------------------------------------------------");
     console.log("ITEMIZED EXPENSE BREAKDOWN:");
 
-    // Loop through records
     expensesList.forEach((item, index) => {
         console.log(`  ${index + 1}. ${item.name}: ${currencySymbol}${Number(item.amount).toFixed(2)}`);
     });
 
     console.log("--------------------------------------------------");
 
-    // Conditionals: Decision-making scenarios
     if (remainingBalance < 0) {
         console.warn("STATUS WARNING: You have exceeded your allocated budget!");
     } else if (remainingBalance === 0) {
@@ -194,15 +213,11 @@ function displayConsoleResults() {
 // 5. HANDLE USER INTERACTIONS (Events)
 // ==========================================
 
-/**
- * Handles tab navigation click events
- */
 function setupNavigation() {
     const navLinks = document.querySelectorAll(".nav-links a");
     const pages = document.querySelectorAll(".page-content");
 
     navLinks.forEach(link => {
-        // Event listener for tab navigation clicks
         link.addEventListener("click", function (event) {
             event.preventDefault();
 
@@ -214,7 +229,6 @@ function setupNavigation() {
             const targetId = this.getAttribute("data-target");
             const targetPage = document.getElementById(targetId);
 
-            // Conditional evaluation
             if (targetPage) {
                 targetPage.style.display = "block";
             }
@@ -222,13 +236,9 @@ function setupNavigation() {
     });
 }
 
-/**
- * Handles expense form submit events
- */
 function setupFormHandling() {
     const form = document.getElementById("expense-form");
     if (form) {
-        // Event listener for form submission
         form.addEventListener("submit", function (e) {
             e.preventDefault(); // Prevents default page refresh
 
@@ -237,8 +247,6 @@ function setupFormHandling() {
 
             if (nameInput && amountInput) {
                 let success = addExpense(nameInput.value, amountInput.value);
-                
-                // Conditional reset
                 if (success) {
                     nameInput.value = "";
                     amountInput.value = "";
@@ -253,7 +261,6 @@ function setupFormHandling() {
 // 6. INITIALIZATION
 // ==========================================
 
-// Event Listener: DOMContentLoaded startup
 document.addEventListener("DOMContentLoaded", function () {
     console.log("SpendWise Interactive Engine Initialized.");
     setupNavigation();
